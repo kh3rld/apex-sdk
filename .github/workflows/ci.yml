@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
   pull_request:
-    branches: [ main, dev ]
+    branches: [main, dev]
   workflow_dispatch:
 
 env:
@@ -139,7 +139,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rust: [stable, beta, nightly, 1.75.0]  # 1.75 is MSRV
+        rust: [stable, beta, nightly, 1.82] # 1.82 is MSRV
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -304,7 +304,17 @@ jobs:
   # All checks passed
   all-checks:
     name: All Checks Passed
-    needs: [format, clippy, test, rust-versions, docs, security-audit, coverage, unused-deps]
+    needs:
+      [
+        format,
+        clippy,
+        test,
+        rust-versions,
+        docs,
+        security-audit,
+        coverage,
+        unused-deps,
+      ]
     runs-on: ubuntu-latest
     permissions:
       contents: read
