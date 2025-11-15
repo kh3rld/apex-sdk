@@ -358,6 +358,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[ignore] // Requires network connection
     async fn test_evm_adapter_not_configured() {
         let sdk = ApexSDK::builder()
             .with_substrate_endpoint("wss://test")
@@ -376,6 +377,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[ignore] // Requires network connection
     async fn test_is_chain_supported_substrate_only() {
         let sdk = ApexSDK::builder()
             .with_substrate_endpoint("wss://test")
