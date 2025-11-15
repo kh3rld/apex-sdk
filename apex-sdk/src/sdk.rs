@@ -136,6 +136,7 @@ impl ApexSDK {
     /// # Ok(())
     /// # }
     /// ```
+    #[allow(clippy::result_large_err)]
     pub fn substrate(&self) -> Result<&SubstrateAdapter> {
         self.substrate_adapter
             .as_ref()
@@ -166,6 +167,7 @@ impl ApexSDK {
     /// # Ok(())
     /// # }
     /// ```
+    #[allow(clippy::result_large_err)]
     pub fn evm(&self) -> Result<&EvmAdapter> {
         self.evm_adapter
             .as_ref()
