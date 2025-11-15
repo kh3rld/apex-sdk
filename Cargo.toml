@@ -19,7 +19,12 @@ license = "Apache-2.0"
 repository = "https://github.com/kherldhussein/apex-sdk"
 homepage = "https://github.com/kherldhussein/apex-sdk"
 keywords = ["blockchain", "substrate", "evm", "sdk", "development"]
-documentation = "https://apexsdk/kherldhussein.github.io/apex-sdk/"
+documentation = "https://docs.rs/apex-sdk"
+categories = ["cryptography::cryptocurrencies", "api-bindings", "development-tools::libraries"]
+
+[badges]
+maintainance = { status = "actively-developed" }
+github = { repository = "kherldhussein/apex-sdk", branch = "main", status = "active", type = "auto" , workflow = "CI"}
 
 [workspace.dependencies]
 # Async runtime
