@@ -294,13 +294,13 @@ fn generate_cargo_toml(name: &str, template: &str) -> String {
     format!(
         r#"[package]
 name = "{}"
-version = "0.1.0"
+version = "0.1.2"
 edition = "2021"
 description = "{}"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-apex-sdk = "0.1.0"
+apex-sdk = "0.1.2"
 tokio = {{ version = "1.35", features = ["full"] }}
 anyhow = "1.0"
 tracing = "0.1"
