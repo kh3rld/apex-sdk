@@ -81,6 +81,8 @@ cargo install --path ./cli
 |-------|------|--------|----------|
 | Polkadot | Substrate | Stable | Full support |
 | Kusama | Substrate | Stable | Full support |
+| Paseo | Substrate | Stable | Testnet, full support |
+| Westend | Substrate | Stable | Testnet (legacy) |
 | Ethereum | EVM | Stable | Full support |
 | BSC | EVM | Stable | Full support |
 | Polygon | EVM | Stable | Full support |
@@ -97,7 +99,7 @@ cargo install --path ./cli
 
 ## Documentation
 
-📚 **[Complete Documentation Hub](./docs/DOCUMENTATION_HUB.md)** - Your one-stop guide
+**[Complete Documentation Hub](./docs/DOCUMENTATION_HUB.md)** - Your one-stop guide
 
 ### Quick Links
 

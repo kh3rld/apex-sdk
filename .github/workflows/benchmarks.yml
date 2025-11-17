@@ -115,6 +115,9 @@ jobs:
       - name: Save PR benchmark results
         run: cp pr-output.txt /tmp/pr-output.txt
 
+      - name: Save PR benchmark results
+        run: cp pr-output.txt /tmp/pr-output.txt
+
       - name: Checkout base branch
         uses: actions/checkout@v5
         with:
