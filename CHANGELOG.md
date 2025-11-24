@@ -44,6 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `hex` from apex-sdk-types
 - Added cargo-udeps ignore annotations for dependencies used in generated code:
   - `sp-runtime` in apex-sdk-substrate (used in generated metadata files)
+- Fixed CI dependency check to only validate root dependencies
+  - Added `--root-deps-only` flag to cargo-outdated check
+  - Transitive dependencies are managed by upstream crates (Alloy, Substrate)
 
 ### Known Issues
 - `trie-db v0.30.0` has future incompatibility warnings related to never type fallback
