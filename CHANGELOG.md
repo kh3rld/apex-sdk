@@ -26,6 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated CLI to use non-deprecated Alloy methods
   - Replaced `on_http` with `connect_http` across all commands
   - Fixed type conversions for gas calculations
+- Updated dependencies to latest versions:
+  - `thiserror` 1.0 → 2.0.17 in apex-sdk-types
+  - `rand` 0.8 → 0.9.2 in apex-sdk-core
+  - Migrated to new rand 0.9 API (`thread_rng()` → `rng()`, `gen()` → `random()`)
+  - All crates now use workspace-defined versions for consistency
 
 ### Fixed
 - Resolved all clippy warnings related to type complexity
