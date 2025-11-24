@@ -200,8 +200,8 @@ impl MockChainAdapter {
         let rate = *self.failure_rate.lock().unwrap();
         if rate > 0.0 {
             use rand::Rng;
-            let mut rng = rand::thread_rng();
-            return rng.gen::<f32>() < rate;
+            let mut rng = rand::rng();
+            return rng.random::<f32>() < rate;
         }
 
         false
