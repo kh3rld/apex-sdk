@@ -32,6 +32,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed provider method access patterns in transaction executor
 - Corrected arithmetic operations to use proper U256 conversions
 - Fixed CLI deploy command to work with new provider API
+- Removed unused dependencies:
+  - `sp-keyring` from apex-sdk-cli
+  - `anyhow` and `thiserror` from apex-sdk-core
+  - `anyhow` from apex-sdk-substrate
+  - `hex` from apex-sdk-types
+
+### Known Issues
+- `trie-db v0.30.0` has future incompatibility warnings related to never type fallback
+  - This is a transitive dependency from Substrate packages (sp-trie, sp-state-machine)
+  - Will be resolved when Parity updates the trie-db crate upstream
+  - Does not affect current functionality
 
 ## [0.1.3] - 2025-01-19
 
