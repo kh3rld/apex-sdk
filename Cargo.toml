@@ -72,7 +72,7 @@ zeroize = "1.7"
 
 # Dev-dependencies
 proptest = "1.4"
-criterion = "0.7.0"
+criterion = "0.8.1"
 mockall = "0.14.0"
 
 # Internal workspace dependencies
