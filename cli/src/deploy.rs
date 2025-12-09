@@ -803,6 +803,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[ignore] // Requires user interaction (password prompt) and network connection
     async fn test_dry_run_flag() {
         // Create a temporary file
         let dir = tempdir().unwrap();
