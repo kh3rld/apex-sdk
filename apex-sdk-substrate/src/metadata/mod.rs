@@ -32,13 +32,15 @@
 //! See `METADATA_GENERATION.md` for detailed instructions.
 
 // Typed metadata modules - uncommented and properly configured
-#[cfg(feature = "typed-polkadot")]
-#[path = "polkadot.rs"]
-pub mod polkadot;
+// Note: polkadot and kusama metadata are not yet generated
+// Uncomment these when metadata is generated using scripts/generate_metadata.sh
+// #[cfg(feature = "typed-polkadot")]
+// #[path = "polkadot.rs"]
+// pub mod polkadot;
 
-#[cfg(feature = "typed-kusama")]
-#[path = "kusama.rs"]
-pub mod kusama;
+// #[cfg(feature = "typed-kusama")]
+// #[path = "kusama.rs"]
+// pub mod kusama;
 
 #[cfg(feature = "typed-westend")]
 #[path = "westend.rs"]
