@@ -1,6 +1,6 @@
 # Apex SDK Protocol Documentation
 
-[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://eurybits.github.io/apex-sdk/)
+[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://apexsdk.dev/)
 [![Discord](https://img.shields.io/discord/1234567890?label=discord)](https://discord.gg/zCDFsBaZJN)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](../LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/eurybits/apex-sdk?style=social)](https://github.com/eurybits/apex-sdk)

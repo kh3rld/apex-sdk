@@ -2,10 +2,10 @@
 title: Apex SDK Protocol - Unified Rust SDK for Substrate & EVM Blockchain Development
 description: Compile-time safe, unified Rust SDK enabling cross-chain development across Substrate and EVM ecosystems. Build secure blockchain applications with type safety, native performance, and seamless cross-chain communication.
 author: Apex SDK Team
-url: https://eurybits.github.io
-baseurl: /apex-sdk
+url: https://apexsdk.dev
+baseurl: ""
 lang: en_US
-
+timezone: UTC
 # Use custom HTML instead of Jekyll theme
 # To properly serve index.html, we disable the theme
 # theme: jekyll-theme-cayman
