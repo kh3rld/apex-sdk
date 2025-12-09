@@ -1,11 +1,11 @@
 # Apex SDK Protocol
 
-[![CI](https://github.com/kherldhussein/apex-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/kherldhussein/apex-sdk/actions/workflows/ci.yml)
-[![Security](https://github.com/kherldhussein/apex-sdk/actions/workflows/security.yml/badge.svg)](https://github.com/kherldhussein/apex-sdk/actions/workflows/security.yml/badge.svg)
-[![Benchmarks](https://github.com/kherldhussein/apex-sdk/actions/workflows/benchmarks.yml/badge.svg)](https://github.com/kherldhussein/apex-sdk/actions/workflows/benchmarks.yml)
+[![CI](https://github.com/eurybits/apex-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/eurybits/apex-sdk/actions/workflows/ci.yml)
+[![Security](https://github.com/eurybits/apex-sdk/actions/workflows/security.yml/badge.svg)](https://github.com/eurybits/apex-sdk/actions/workflows/security.yml/badge.svg)
+[![Benchmarks](https://github.com/eurybits/apex-sdk/actions/workflows/benchmarks.yml/badge.svg)](https://github.com/eurybits/apex-sdk/actions/workflows/benchmarks.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Rust](https://img.shields.io/badge/Rust-1.85%2B-orange.svg)](https://www.rust-lang.org/)
-[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://kherldhussein.github.io/apex-sdk/)
+[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://eurybits.github.io/apex-sdk/)
 [![Crates.io](https://img.shields.io/crates/v/apex-sdk.svg)](https://crates.io/crates/apex-sdk)
 
 > **Build secure, cross-chain blockchain applications with compile-time safety**
@@ -63,7 +63,7 @@ apex-sdk-evm = "0.1.0"
 
 ```bash
 # Clone the repository
-git clone https://github.com/kherldhussein/apex-sdk.git
+git clone https://github.com/eurybits/apex-sdk.git
 cd apex-sdk
 
 # Build from source
@@ -135,12 +135,18 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 **Quick Start:**
 
 ```bash
-git clone https://github.com/kherldhussein/apex-sdk.git
+git clone https://github.com/eurybits/apex-sdk.git
 cd apex-sdk
 cargo test --all-features
 ```
 
 **[Development Guide](./docs/DEVELOPMENT.md)**
+
+## Community
+
+- **Discord**: [Join our community](https://discord.gg/zCDFsBaZJN)
+- **GitHub Discussions**: [Ask questions and share ideas](https://github.com/eurybits/apex-sdk/discussions)
+- **Issues**: [Report bugs or request features](https://github.com/eurybits/apex-sdk/issues)
 
 ## Security
 
