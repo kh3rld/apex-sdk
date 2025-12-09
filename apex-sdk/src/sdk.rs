@@ -285,7 +285,7 @@ impl ApexSDK {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use apex_sdk_types::{Chain, Address};
+    use apex_sdk_types::{Address, Chain};
 
     #[test]
     fn test_new_returns_error_when_no_adapters() {
@@ -307,16 +307,16 @@ mod tests {
         // Test timeout configuration and default values
         let default_timeout = Duration::from_secs(30);
         let custom_timeout = Duration::from_secs(45);
-        
+
         // Test that we can create durations for timeouts
         assert_eq!(default_timeout.as_secs(), 30);
         assert_eq!(custom_timeout.as_secs(), 45);
         assert!(custom_timeout > default_timeout);
-        
+
         // Test timeout validation
         let min_timeout = Duration::from_secs(5);
         let max_timeout = Duration::from_secs(300); // 5 minutes
-        
+
         assert!(min_timeout <= default_timeout);
         assert!(default_timeout <= max_timeout);
     }
@@ -339,23 +339,47 @@ mod tests {
     #[test]
     fn test_chain_type_detection() {
         // Test that we can detect chain types correctly
-        assert_eq!(Chain::Polkadot.chain_type(), apex_sdk_types::ChainType::Substrate);
-        assert_eq!(Chain::Kusama.chain_type(), apex_sdk_types::ChainType::Substrate);
-        assert_eq!(Chain::Westend.chain_type(), apex_sdk_types::ChainType::Substrate);
-        
+        assert_eq!(
+            Chain::Polkadot.chain_type(),
+            apex_sdk_types::ChainType::Substrate
+        );
+        assert_eq!(
+            Chain::Kusama.chain_type(),
+            apex_sdk_types::ChainType::Substrate
+        );
+        assert_eq!(
+            Chain::Westend.chain_type(),
+            apex_sdk_types::ChainType::Substrate
+        );
+
         assert_eq!(Chain::Ethereum.chain_type(), apex_sdk_types::ChainType::Evm);
         assert_eq!(Chain::Polygon.chain_type(), apex_sdk_types::ChainType::Evm);
-        assert_eq!(Chain::BinanceSmartChain.chain_type(), apex_sdk_types::ChainType::Evm);
+        assert_eq!(
+            Chain::BinanceSmartChain.chain_type(),
+            apex_sdk_types::ChainType::Evm
+        );
     }
 
     #[test]
     fn test_chain_name_parsing() {
         // Test case insensitive parsing of chain names
-        assert_eq!(Chain::from_str_case_insensitive("polkadot"), Some(Chain::Polkadot));
-        assert_eq!(Chain::from_str_case_insensitive("POLKADOT"), Some(Chain::Polkadot));
-        assert_eq!(Chain::from_str_case_insensitive("ethereum"), Some(Chain::Ethereum));
-        assert_eq!(Chain::from_str_case_insensitive("ETHEREUM"), Some(Chain::Ethereum));
-        
+        assert_eq!(
+            Chain::from_str_case_insensitive("polkadot"),
+            Some(Chain::Polkadot)
+        );
+        assert_eq!(
+            Chain::from_str_case_insensitive("POLKADOT"),
+            Some(Chain::Polkadot)
+        );
+        assert_eq!(
+            Chain::from_str_case_insensitive("ethereum"),
+            Some(Chain::Ethereum)
+        );
+        assert_eq!(
+            Chain::from_str_case_insensitive("ETHEREUM"),
+            Some(Chain::Ethereum)
+        );
+
         // Test invalid chain names
         assert_eq!(Chain::from_str_case_insensitive("invalid"), None);
         assert_eq!(Chain::from_str_case_insensitive(""), None);
@@ -366,7 +390,7 @@ mod tests {
         // Test endpoint format validation
         let valid_evm_endpoints = [
             "https://eth.llamarpc.com",
-            "https://ethereum.publicnode.com", 
+            "https://ethereum.publicnode.com",
             "http://localhost:8545",
         ];
 
@@ -394,15 +418,15 @@ mod tests {
         // Test chain configuration data
         let polkadot = Chain::Polkadot;
         let ethereum = Chain::Ethereum;
-        
+
         // Test Display implementation (if available)
         let _polkadot_str = format!("{:?}", polkadot);
         let _ethereum_str = format!("{:?}", ethereum);
-        
+
         // Test equality
         assert_eq!(polkadot, Chain::Polkadot);
         assert_ne!(polkadot, ethereum);
-        
+
         // Test cloning
         let cloned_polkadot = polkadot.clone();
         assert_eq!(polkadot, cloned_polkadot);
@@ -412,39 +436,30 @@ mod tests {
     fn test_address_validation() {
         // Test address format validation
         use apex_sdk_types::Address;
-        
+
         // Test that we can create addresses
         let substrate_address = "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY";
         let evm_address = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEbD";
-        
+
         // Test address creation
-        let substrate_addr = Address::substrate_checked(substrate_address);
-        let evm_addr = Address::evm_checked(evm_address);
-        
-        // Both should successfully parse or fail gracefully
-        match substrate_addr {
-            Ok(_) => assert!(true), // Valid address
-            Err(_) => assert!(true), // Invalid address format is also acceptable for test
-        }
-        
-        match evm_addr {
-            Ok(_) => assert!(true), // Valid address
-            Err(_) => assert!(true), // Invalid address format is also acceptable for test
-        }
+        let _substrate_addr = Address::substrate_checked(substrate_address);
+        let _evm_addr = Address::evm_checked(evm_address);
+
+        // Both should successfully parse or fail gracefully - test passes if no panic occurs
     }
 
     #[test]
     fn test_adapter_error_handling() {
         // Test error handling without requiring actual adapters
         use crate::Error;
-        
+
         // Test that we can create configuration errors
         let config_error = Error::Config("Test configuration error".to_string());
         match config_error {
             Error::Config(msg) => assert_eq!(msg, "Test configuration error"),
             _ => panic!("Wrong error type"),
         }
-        
+
         // Test error display
         let error_string = format!("{}", Error::Config("Test error".to_string()));
         assert!(error_string.contains("Test error"));
@@ -463,7 +478,7 @@ mod tests {
         for timeout in &timeouts {
             assert!(timeout.as_secs() >= 5);
             assert!(timeout.as_secs() <= 300);
-            
+
             // Test that we can clone timeouts
             let cloned = *timeout;
             assert_eq!(*timeout, cloned);
@@ -527,7 +542,7 @@ mod tests {
     #[test]
     fn test_execute_unsupported_chain() {
         use crate::transaction::TransactionBuilder;
-        
+
         let sdk = ApexSDK {
             #[cfg(feature = "substrate")]
             substrate_adapter: None,
@@ -556,13 +571,13 @@ mod tests {
         // Test that chains have sensible default endpoints
         let polkadot = Chain::Polkadot;
         let ethereum = Chain::Ethereum;
-        
+
         let polkadot_endpoint = polkadot.default_endpoint();
         let ethereum_endpoint = ethereum.default_endpoint();
-        
+
         assert!(polkadot_endpoint.starts_with("wss://"));
         assert!(ethereum_endpoint.starts_with("https://"));
-        
+
         assert!(!polkadot_endpoint.is_empty());
         assert!(!ethereum_endpoint.is_empty());
     }
@@ -570,23 +585,14 @@ mod tests {
     #[test]
     fn test_chain_types() {
         // Test all supported chains have correct types
-        let substrate_chains = [
-            Chain::Polkadot,
-            Chain::Kusama, 
-            Chain::Westend,
-            Chain::Paseo,
-        ];
-        
+        let substrate_chains = [Chain::Polkadot, Chain::Kusama, Chain::Westend, Chain::Paseo];
+
         for chain in &substrate_chains {
             assert_eq!(chain.chain_type(), apex_sdk_types::ChainType::Substrate);
         }
 
-        let evm_chains = [
-            Chain::Ethereum,
-            Chain::Polygon,
-            Chain::BinanceSmartChain,
-        ];
-        
+        let evm_chains = [Chain::Ethereum, Chain::Polygon, Chain::BinanceSmartChain];
+
         for chain in &evm_chains {
             assert_eq!(chain.chain_type(), apex_sdk_types::ChainType::Evm);
         }

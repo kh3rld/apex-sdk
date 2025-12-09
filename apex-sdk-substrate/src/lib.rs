@@ -567,18 +567,18 @@ mod tests {
         let polkadot_addr = Address::substrate("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5");
         let kusama_addr = Address::substrate("HNZata7iMYWmk5RvZRTiAsSDhV8366zq2YGb3tLH5Upf74F");
         let westend_addr = Address::substrate("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
-        
+
         // Test that addresses can be created
         match polkadot_addr {
             Address::Substrate(addr) => assert!(!addr.is_empty()),
             _ => panic!("Expected Substrate address"),
         }
-        
+
         match kusama_addr {
             Address::Substrate(addr) => assert!(!addr.is_empty()),
             _ => panic!("Expected Substrate address"),
         }
-        
+
         match westend_addr {
             Address::Substrate(addr) => assert!(!addr.is_empty()),
             _ => panic!("Expected Substrate address"),
@@ -591,15 +591,15 @@ mod tests {
         let invalid_addr = Address::substrate("invalid_address");
         let _short_addr = Address::substrate("123");
         let evm_addr = Address::evm("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7");
-        
+
         // Test that we can create addresses of different types
         match invalid_addr {
-            Address::Substrate(_) => assert!(true),
+            Address::Substrate(_) => {} // Expected Substrate address
             _ => panic!("Expected Substrate address"),
         }
-        
+
         match evm_addr {
-            Address::Evm(_) => assert!(true),
+            Address::Evm(_) => {} // Expected EVM address
             _ => panic!("Expected EVM address"),
         }
     }
@@ -624,11 +624,11 @@ mod tests {
         // Test balance formatting logic
         let decimals = 12u8;
         let amount = 1_000_000_000_000u128; // 1 token with 12 decimals
-        
+
         let divisor = 10u128.pow(decimals as u32);
         let whole = amount / divisor;
         let fraction = amount % divisor;
-        
+
         assert_eq!(whole, 1);
         assert_eq!(fraction, 0);
     }
@@ -658,13 +658,22 @@ mod tests {
     #[test]
     fn test_error_types() {
         let connection_err = Error::Connection("Test connection error".to_string());
-        assert_eq!(connection_err.to_string(), "Connection error: Test connection error");
+        assert_eq!(
+            connection_err.to_string(),
+            "Connection error: Test connection error"
+        );
 
         let transaction_err = Error::Transaction("Test transaction error".to_string());
-        assert_eq!(transaction_err.to_string(), "Transaction error: Test transaction error");
+        assert_eq!(
+            transaction_err.to_string(),
+            "Transaction error: Test transaction error"
+        );
 
         let metadata_err = Error::Metadata("Test metadata error".to_string());
-        assert_eq!(metadata_err.to_string(), "Metadata error: Test metadata error");
+        assert_eq!(
+            metadata_err.to_string(),
+            "Metadata error: Test metadata error"
+        );
 
         let storage_err = Error::Storage("Test storage error".to_string());
         assert_eq!(storage_err.to_string(), "Storage error: Test storage error");
@@ -673,10 +682,16 @@ mod tests {
         assert_eq!(wallet_err.to_string(), "Wallet error: Test wallet error");
 
         let signature_err = Error::Signature("Test signature error".to_string());
-        assert_eq!(signature_err.to_string(), "Signature error: Test signature error");
+        assert_eq!(
+            signature_err.to_string(),
+            "Signature error: Test signature error"
+        );
 
         let encoding_err = Error::Encoding("Test encoding error".to_string());
-        assert_eq!(encoding_err.to_string(), "Encoding error: Test encoding error");
+        assert_eq!(
+            encoding_err.to_string(),
+            "Encoding error: Test encoding error"
+        );
 
         let other_err = Error::Other("Test other error".to_string());
         assert_eq!(other_err.to_string(), "Other error: Test other error");
@@ -686,13 +701,13 @@ mod tests {
     fn test_from_subxt_error() {
         // Test error conversion without using specific RPC error variants
         use subxt::Error as SubxtError;
-        
+
         // Create a simple error that we can convert
         let subxt_err = SubxtError::Other("Test RPC error".to_string());
         let our_error: Error = subxt_err.into();
-        
+
         match our_error {
-            Error::Subxt(_) => {}, // Expected
+            Error::Subxt(_) => {} // Expected
             _ => panic!("Expected Subxt error variant"),
         }
     }
@@ -714,7 +729,7 @@ mod tests {
     async fn test_polkadot_connection_integration() {
         let adapter = SubstrateAdapter::connect_with_config(ChainConfig::polkadot()).await;
         assert!(adapter.is_ok());
-        
+
         let adapter = adapter.unwrap();
         assert_eq!(adapter.chain_name(), "Polkadot");
     }
@@ -722,15 +737,19 @@ mod tests {
     #[tokio::test]
     #[ignore] // Requires network connection
     async fn test_get_balance_integration() {
-        let adapter = SubstrateAdapter::connect("wss://westend-rpc.polkadot.io").await.unwrap();
-        
+        let adapter = SubstrateAdapter::connect("wss://westend-rpc.polkadot.io")
+            .await
+            .unwrap();
+
         // Test balance query for a known address
-        let result = adapter.get_balance("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY").await;
+        let result = adapter
+            .get_balance("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY")
+            .await;
         assert!(result.is_ok());
     }
 
     #[tokio::test]
-    #[ignore] // Requires network connection  
+    #[ignore] // Requires network connection
     async fn test_invalid_endpoint_connection() {
         let result = SubstrateAdapter::connect("wss://invalid.endpoint.that.does.not.exist").await;
         assert!(result.is_err());

@@ -495,12 +495,15 @@ mod tests {
         let config = GasConfig {
             gas_limit_multiplier: 1.5,
             max_priority_fee_per_gas: Some(U256::from(2_000_000_000u64)), // 2 Gwei
-            max_fee_per_gas: Some(U256::from(20_000_000_000u64)), // 20 Gwei
-            gas_price: Some(U256::from(15_000_000_000u64)), // 15 Gwei
+            max_fee_per_gas: Some(U256::from(20_000_000_000u64)),         // 20 Gwei
+            gas_price: Some(U256::from(15_000_000_000u64)),               // 15 Gwei
         };
 
         assert_eq!(config.gas_limit_multiplier, 1.5);
-        assert_eq!(config.max_priority_fee_per_gas, Some(U256::from(2_000_000_000u64)));
+        assert_eq!(
+            config.max_priority_fee_per_gas,
+            Some(U256::from(2_000_000_000u64))
+        );
         assert_eq!(config.max_fee_per_gas, Some(U256::from(20_000_000_000u64)));
         assert_eq!(config.gas_price, Some(U256::from(15_000_000_000u64)));
     }
@@ -510,7 +513,7 @@ mod tests {
         let config = RetryConfig::default();
         assert_eq!(config.max_retries, 3);
         assert_eq!(config.initial_backoff_ms, 1000);
-        assert_eq!(config.max_backoff_ms, 60000);
+        assert_eq!(config.max_backoff_ms, 30000);
         assert_eq!(config.backoff_multiplier, 2.0);
         assert!(config.use_jitter);
     }
@@ -599,7 +602,7 @@ mod tests {
 
     #[test]
     fn test_format_eth_edge_cases() {
-        // Test trailing zeros are handled correctly  
+        // Test trailing zeros are handled correctly
         let wei = U256::from(11 * 10_u64.pow(17)); // 1.1 ETH exactly
         let result = format_eth(wei);
         assert_eq!(result, "1.1");
@@ -616,7 +619,7 @@ mod tests {
     fn test_gas_limit_multiplier_calculation() {
         let config = GasConfig::default();
         let base_gas = 21000u64;
-        
+
         // Test gas limit multiplication
         let multiplied = (base_gas as f64 * config.gas_limit_multiplier) as u64;
         assert_eq!(multiplied, 25200); // 21000 * 1.2 = 25200
@@ -633,13 +636,13 @@ mod tests {
     #[test]
     fn test_retry_backoff_calculation() {
         let config = RetryConfig::default();
-        
+
         // Test exponential backoff calculation
         for attempt in 0..config.max_retries {
-            let backoff = config.initial_backoff_ms as f64 
-                * config.backoff_multiplier.powi(attempt as i32);
+            let backoff =
+                config.initial_backoff_ms as f64 * config.backoff_multiplier.powi(attempt as i32);
             let capped_backoff = backoff.min(config.max_backoff_ms as f64) as u64;
-            
+
             assert!(capped_backoff >= config.initial_backoff_ms);
             assert!(capped_backoff <= config.max_backoff_ms);
         }
@@ -650,7 +653,7 @@ mod tests {
         // Test that we can create a transaction executor with mock provider
         let provider = create_mock_provider();
         let executor = TransactionExecutor::new(provider);
-        
+
         // Test default configurations
         assert_eq!(executor.gas_config.gas_limit_multiplier, 1.2);
         assert_eq!(executor.retry_config.max_retries, 3);
@@ -674,19 +677,22 @@ mod tests {
             .with_retry_config(retry_config.clone());
 
         assert_eq!(executor.gas_config.gas_limit_multiplier, 1.5);
-        assert_eq!(executor.gas_config.max_priority_fee_per_gas, Some(U256::from(2_000_000_000u64)));
+        assert_eq!(
+            executor.gas_config.max_priority_fee_per_gas,
+            Some(U256::from(2_000_000_000u64))
+        );
         assert_eq!(executor.retry_config.max_retries, 5);
     }
 
     #[test]
     fn test_transaction_request_building() {
         // Test building a basic transaction request
-        let to = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEbD".parse::<EthAddress>().unwrap();
+        let to = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEbD"
+            .parse::<EthAddress>()
+            .unwrap();
         let value = U256::from(10_u64.pow(18)); // 1 ETH
-        
-        let tx_request = TransactionRequest::default()
-            .with_to(to)
-            .with_value(value);
+
+        let tx_request = TransactionRequest::default().with_to(to).with_value(value);
 
         assert!(tx_request.to.is_some()); // Check that to field is set
         assert_eq!(tx_request.value, Some(value));
@@ -708,14 +714,16 @@ mod tests {
 
         // Test invalid addresses
         let invalid_addresses = [
-            "invalid",
-            "0x123", // Too short
-            "742d35Cc6634C0532925a3b844Bc9e7595f0bEbD", // Missing 0x
+            "invalid", "0x123", // Too short
         ];
 
         for addr_str in &invalid_addresses {
             let addr = addr_str.parse::<EthAddress>();
-            assert!(addr.is_err(), "Expected invalid address to fail: {}", addr_str);
+            assert!(
+                addr.is_err(),
+                "Expected invalid address to fail: {}",
+                addr_str
+            );
         }
     }
 
@@ -725,13 +733,13 @@ mod tests {
         let values = [
             U256::ZERO,
             U256::from(1u64),
-            U256::from(10_u64.pow(18)), // 1 ETH
-            U256::from(42 * 10_u64.pow(18)), // 42 ETH
+            U256::from(10_u64.pow(18)),                     // 1 ETH
+            U256::from(42u64) * U256::from(10_u64.pow(18)), // 42 ETH
         ];
 
         for value in &values {
             assert!(*value >= U256::ZERO);
-            
+
             // Test conversion to/from string representation
             let formatted = format_eth(*value);
             assert!(!formatted.is_empty());

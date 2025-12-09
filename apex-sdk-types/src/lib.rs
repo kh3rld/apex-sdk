@@ -992,7 +992,7 @@ mod tests {
         // Valid Substrate address
         let addr = Address::substrate("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5");
         assert!(addr.validate().is_ok());
-        
+
         // Invalid Substrate address
         let addr = Address::substrate("invalid");
         assert!(addr.validate().is_err());

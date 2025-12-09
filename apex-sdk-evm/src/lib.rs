@@ -340,8 +340,8 @@ impl apex_sdk_core::ChainAdapter for EvmAdapter {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use apex_sdk_types::Address;
     use apex_sdk_core::ChainAdapter;
+    use apex_sdk_types::Address;
 
     #[test]
     fn test_invalid_url_format() {
@@ -355,7 +355,7 @@ mod tests {
     fn test_address_validation_invalid() {
         // Create a mock adapter for testing without network
         let adapter = create_mock_adapter();
-        
+
         // Test invalid addresses
         let invalid_addr = Address::evm("invalid");
         assert!(!adapter.validate_address(&invalid_addr));
@@ -373,7 +373,7 @@ mod tests {
     #[test]
     fn test_address_validation_valid() {
         let adapter = create_mock_adapter();
-        
+
         let valid_addr = Address::evm("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7");
         assert!(adapter.validate_address(&valid_addr));
 
@@ -394,7 +394,7 @@ mod tests {
     fn test_chain_adapter_trait_implementation() {
         let adapter = create_mock_adapter();
         assert_eq!(adapter.chain_name(), "EVM");
-        
+
         let valid_addr = Address::evm("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7");
         assert!(adapter.validate_address(&valid_addr));
     }
@@ -403,17 +403,20 @@ mod tests {
     fn test_contract_creation_valid_address() {
         let adapter = create_mock_adapter();
         let contract_result = adapter.contract("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7");
-        
+
         assert!(contract_result.is_ok());
         let contract = contract_result.unwrap();
-        assert_eq!(contract.address(), "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7");
+        assert_eq!(
+            contract.address(),
+            "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7"
+        );
     }
 
     #[test]
     fn test_contract_creation_invalid_address() {
         let adapter = create_mock_adapter();
         let contract_result = adapter.contract("invalid_address");
-        
+
         assert!(contract_result.is_err());
         if let Err(Error::InvalidAddress(addr)) = contract_result {
             assert_eq!(addr, "invalid_address");
@@ -439,20 +442,24 @@ mod tests {
     #[test]
     fn test_transaction_hash_validation() {
         let adapter = create_mock_adapter();
-        
+
         // Test invalid hash formats
         let rt = tokio::runtime::Runtime::new().unwrap();
-        
+
         // Too short hash
         let result = rt.block_on(adapter.get_transaction_status("0x123"));
         assert!(matches!(result, Err(Error::Transaction(_))));
-        
+
         // Missing 0x prefix
-        let result = rt.block_on(adapter.get_transaction_status("5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060"));
+        let result = rt.block_on(adapter.get_transaction_status(
+            "5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060",
+        ));
         assert!(matches!(result, Err(Error::Transaction(_))));
-        
+
         // Invalid hex character
-        let result = rt.block_on(adapter.get_transaction_status("0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060G"));
+        let result = rt.block_on(adapter.get_transaction_status(
+            "0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060G",
+        ));
         assert!(matches!(result, Err(Error::Transaction(_))));
     }
 
@@ -460,7 +467,7 @@ mod tests {
     fn test_get_balance_disconnected() {
         let adapter = create_disconnected_adapter();
         let rt = tokio::runtime::Runtime::new().unwrap();
-        
+
         let result = rt.block_on(adapter.get_balance("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7"));
         assert!(matches!(result, Err(Error::Connection(_))));
     }
@@ -469,8 +476,10 @@ mod tests {
     fn test_get_transaction_status_disconnected() {
         let adapter = create_disconnected_adapter();
         let rt = tokio::runtime::Runtime::new().unwrap();
-        
-        let result = rt.block_on(adapter.get_transaction_status("0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060"));
+
+        let result = rt.block_on(adapter.get_transaction_status(
+            "0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060",
+        ));
         assert!(matches!(result, Err(Error::Connection(_))));
     }
 
@@ -484,16 +493,28 @@ mod tests {
     #[test]
     fn test_error_display_messages() {
         let connection_err = Error::Connection("Test connection error".to_string());
-        assert_eq!(connection_err.to_string(), "Connection error: Test connection error");
+        assert_eq!(
+            connection_err.to_string(),
+            "Connection error: Test connection error"
+        );
 
         let transaction_err = Error::Transaction("Test transaction error".to_string());
-        assert_eq!(transaction_err.to_string(), "Transaction error: Test transaction error");
+        assert_eq!(
+            transaction_err.to_string(),
+            "Transaction error: Test transaction error"
+        );
 
         let contract_err = Error::Contract("Test contract error".to_string());
-        assert_eq!(contract_err.to_string(), "Contract error: Test contract error");
+        assert_eq!(
+            contract_err.to_string(),
+            "Contract error: Test contract error"
+        );
 
         let address_err = Error::InvalidAddress("Test invalid address".to_string());
-        assert_eq!(address_err.to_string(), "Invalid address: Test invalid address");
+        assert_eq!(
+            address_err.to_string(),
+            "Invalid address: Test invalid address"
+        );
 
         let other_err = Error::Other("Test other error".to_string());
         assert_eq!(other_err.to_string(), "Other error: Test other error");
@@ -503,7 +524,7 @@ mod tests {
     fn test_balance_address_parsing_error() {
         let adapter = create_mock_adapter();
         let rt = tokio::runtime::Runtime::new().unwrap();
-        
+
         let result = rt.block_on(adapter.get_balance("invalid_address"));
         assert!(matches!(result, Err(Error::InvalidAddress(_))));
     }
@@ -531,7 +552,7 @@ mod tests {
     }
 
     #[tokio::test]
-    #[ignore] // Requires network connection  
+    #[ignore] // Requires network connection
     async fn test_transaction_status_with_network() {
         let adapter = EvmAdapter::connect("https://eth.llamarpc.com")
             .await
@@ -554,7 +575,9 @@ mod tests {
             .unwrap();
 
         // Test balance query for a known address
-        let result = adapter.get_balance("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7").await;
+        let result = adapter
+            .get_balance("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7")
+            .await;
         assert!(result.is_ok());
     }
 
@@ -565,11 +588,13 @@ mod tests {
             .await
             .unwrap();
 
-        let result = adapter.get_balance_eth("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7").await;
+        let result = adapter
+            .get_balance_eth("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb7")
+            .await;
         assert!(result.is_ok());
-        
+
         let eth_balance = result.unwrap();
-        assert!(eth_balance.contains("."));  // Should have decimal point
+        assert!(eth_balance.contains(".")); // Should have decimal point
     }
 
     #[tokio::test]

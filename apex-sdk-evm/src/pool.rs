@@ -352,13 +352,14 @@ mod tests {
 
     #[test]
     fn test_endpoint_health_failure_tracking() {
-        let mut health = EndpointHealth::default();
-        
         // Simulate failures
-        health.is_healthy = false;
-        health.failure_count = 3;
-        health.last_failure = Some(Instant::now());
-        
+        let health = EndpointHealth {
+            is_healthy: false,
+            failure_count: 3,
+            last_failure: Some(Instant::now()),
+            ..Default::default()
+        };
+
         assert!(!health.is_healthy);
         assert_eq!(health.failure_count, 3);
         assert!(health.last_failure.is_some());
@@ -366,12 +367,13 @@ mod tests {
 
     #[test]
     fn test_endpoint_health_response_time_tracking() {
-        let mut health = EndpointHealth::default();
-        
         // Simulate successful responses with timing
-        health.last_success = Some(Instant::now());
-        health.avg_response_time_ms = 150; // 150ms average
-        
+        let health = EndpointHealth {
+            last_success: Some(Instant::now()),
+            avg_response_time_ms: 150, // 150ms average
+            ..Default::default()
+        };
+
         assert!(health.last_success.is_some());
         assert_eq!(health.avg_response_time_ms, 150);
     }
@@ -386,7 +388,7 @@ mod tests {
 
         assert_eq!(endpoints.len(), 3);
         assert!(endpoints.iter().all(|e| e.starts_with("https://")));
-        
+
         // Test endpoint validation
         for endpoint in &endpoints {
             assert!(!endpoint.is_empty());
@@ -397,14 +399,14 @@ mod tests {
     #[test]
     fn test_round_robin_logic() {
         // Simulate round-robin selection
-        let endpoints = vec![
+        let endpoints = [
             "endpoint1".to_string(),
-            "endpoint2".to_string(), 
+            "endpoint2".to_string(),
             "endpoint3".to_string(),
         ];
-        
+
         let counter = AtomicUsize::new(0);
-        
+
         // Test round-robin pattern
         for expected_index in [0, 1, 2, 0, 1, 2] {
             let index = counter.fetch_add(1, Ordering::Relaxed) % endpoints.len();
@@ -417,9 +419,9 @@ mod tests {
     fn test_health_check_timing() {
         let config = PoolConfig::default();
         let interval = Duration::from_secs(config.health_check_interval_secs);
-        
+
         assert_eq!(interval, Duration::from_secs(30));
-        
+
         // Test custom interval
         let custom_config = PoolConfig {
             health_check_interval_secs: 60,
@@ -433,30 +435,30 @@ mod tests {
     fn test_failure_threshold() {
         let config = PoolConfig::default();
         let max_failures = config.max_failures;
-        
+
         // Simulate failure counting
         let mut failure_count = 0;
-        
+
         for _ in 0..5 {
             failure_count += 1;
             if failure_count >= max_failures {
                 break; // Endpoint should be marked unhealthy
             }
         }
-        
+
         assert_eq!(failure_count, max_failures);
     }
 
     #[test]
     fn test_timeout_configuration() {
         let config = PoolConfig::default();
-        
+
         let health_check_timeout = Duration::from_secs(config.health_check_timeout_secs);
         let health_check_interval = Duration::from_secs(config.health_check_interval_secs);
-        
+
         assert_eq!(health_check_timeout, Duration::from_secs(5));
         assert_eq!(health_check_interval, Duration::from_secs(30));
-        
+
         // Ensure interval is longer than timeout
         assert!(health_check_interval > health_check_timeout);
     }
@@ -473,7 +475,7 @@ mod tests {
         for endpoint in &valid_endpoints {
             assert!(!endpoint.is_empty());
             assert!(endpoint.starts_with("http://") || endpoint.starts_with("https://"));
-            
+
             // Basic URL format validation
             assert!(endpoint.contains("://"));
             assert!(endpoint.len() > 10); // Basic length check
@@ -493,7 +495,7 @@ mod tests {
             if endpoint.is_empty() {
                 continue; // Empty string is obviously invalid
             }
-            
+
             // These should not be HTTP(S)
             assert!(!endpoint.starts_with("http://") || !endpoint.starts_with("https://"));
         }
@@ -503,23 +505,23 @@ mod tests {
     fn test_connection_pool_stats() {
         // Test pool statistics tracking
         let mut stats = HashMap::new();
-        
+
         // Simulate connection usage statistics
         stats.insert("total_connections".to_string(), 25);
         stats.insert("active_connections".to_string(), 8);
         stats.insert("healthy_endpoints".to_string(), 3);
         stats.insert("unhealthy_endpoints".to_string(), 1);
-        
+
         assert_eq!(stats.get("total_connections"), Some(&25));
         assert_eq!(stats.get("active_connections"), Some(&8));
         assert_eq!(stats.get("healthy_endpoints"), Some(&3));
         assert_eq!(stats.get("unhealthy_endpoints"), Some(&1));
-        
+
         // Calculate utilization rate
         let active = *stats.get("active_connections").unwrap() as f64;
         let total = *stats.get("total_connections").unwrap() as f64;
         let utilization = active / total;
-        
+
         assert!((utilization - 0.32).abs() < 0.01); // 8/25 = 0.32
     }
 
@@ -527,20 +529,20 @@ mod tests {
     fn test_health_status_transitions() {
         let mut health = EndpointHealth::default();
         assert!(health.is_healthy);
-        
+
         // Transition to unhealthy
         health.is_healthy = false;
         health.failure_count = 3;
         health.last_failure = Some(Instant::now());
-        
+
         assert!(!health.is_healthy);
         assert!(health.failure_count > 0);
-        
+
         // Transition back to healthy
         health.is_healthy = true;
         health.failure_count = 0;
         health.last_success = Some(Instant::now());
-        
+
         assert!(health.is_healthy);
         assert_eq!(health.failure_count, 0);
     }
@@ -548,11 +550,11 @@ mod tests {
     #[test]
     fn test_response_time_calculation() {
         let mut health = EndpointHealth::default();
-        
+
         // Simulate response time tracking
         let response_times = [100, 150, 200, 120, 180]; // milliseconds
         let average = response_times.iter().sum::<u64>() / response_times.len() as u64;
-        
+
         health.avg_response_time_ms = average;
         assert_eq!(health.avg_response_time_ms, 150); // (100+150+200+120+180)/5 = 150
     }
@@ -562,18 +564,15 @@ mod tests {
         // Test that empty endpoint list is handled
         let endpoints: Vec<String> = vec![];
         let result = ConnectionPool::new(endpoints).await;
-        
+
         // Should fail with empty endpoint list
         assert!(result.is_err());
     }
 
     #[tokio::test]
     async fn test_connection_pool_creation_invalid_endpoints() {
-        let endpoints = vec![
-            "invalid-url".to_string(),
-            "not-http://invalid".to_string(),
-        ];
-        
+        let endpoints = vec!["invalid-url".to_string(), "not-http://invalid".to_string()];
+
         let result = ConnectionPool::new(endpoints).await;
         // Should fail with invalid endpoints
         assert!(result.is_err());
@@ -605,16 +604,17 @@ mod tests {
         ];
 
         let pool = ConnectionPool::new(endpoints.clone()).await.unwrap();
-        
+
         // Get multiple connections to test round-robin
         let mut used_endpoints = std::collections::HashSet::new();
-        
-        for _ in 0..4 { // More than the number of endpoints
+
+        for _ in 0..4 {
+            // More than the number of endpoints
             if let Ok(conn) = pool.get_connection().await {
                 used_endpoints.insert(conn.endpoint().to_string());
             }
         }
-        
+
         // Should have used multiple endpoints
         assert!(!used_endpoints.is_empty());
     }

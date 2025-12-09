@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Apex SDK Documentation",
   "scripts": {
-    "build": "cp -r docs/* dist/",
+    "build": "mkdir -p dist && cp -r docs/* dist/",
     "deploy": "npm run build"
   },
   "devDependencies": {},
