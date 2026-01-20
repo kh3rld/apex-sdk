@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768055670023,
+  "lastUpdate": 1768890905439,
   "repoUrl": "https://github.com/kh3rld/apex-sdk",
   "entries": {
     "Benchmark": [
@@ -802,6 +802,216 @@ window.BENCHMARK_DATA = {
           {
             "name": "chain_metadata_operations/get_chain_ids",
             "value": 1,
+            "range": "± 0",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kherld.hussein@gmail.com",
+            "name": "kh3rld",
+            "username": "kh3rld"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4367757b5e7b70aba2be758011d209029076e70a",
+          "message": "impl tx broadcasting (#107)\n\n* feat: implement core broadcasting logic\n\n* refactor: improve formatting of validate_extrinsic_format function\n\n* test(substrate): impl tsactional tests",
+          "timestamp": "2026-01-20T00:49:06-05:00",
+          "tree_id": "8282f75a50e7bab5edf28d0b36c8b60526a8fc00",
+          "url": "https://github.com/kh3rld/apex-sdk/commit/4367757b5e7b70aba2be758011d209029076e70a"
+        },
+        "date": 1768890904761,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "transaction_creation/create_substrate_transfer",
+            "value": 49,
+            "range": "± 2",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "transaction_creation/create_evm_transfer",
+            "value": 49,
+            "range": "± 2",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "address_validation/substrate_validation/0",
+            "value": 9,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "address_validation/substrate_validation/1",
+            "value": 9,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "address_validation/substrate_validation/2",
+            "value": 9,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "address_validation/evm_validation/0",
+            "value": 9,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "address_validation/evm_validation/1",
+            "value": 9,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "address_validation/evm_validation/2",
+            "value": 9,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "sdk_initialization/create_substrate_sdk",
+            "value": 22,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "sdk_initialization/create_evm_sdk",
+            "value": 22,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "sdk_initialization/create_multi_chain_sdk",
+            "value": 42,
+            "range": "± 1",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "transaction_signing/substrate_sign_simulation",
+            "value": 158063,
+            "range": "± 267",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "transaction_signing/evm_sign_simulation",
+            "value": 138175,
+            "range": "± 331",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "amount_operations/amount_creation",
+            "value": 0,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "amount_operations/amount_arithmetic",
+            "value": 0,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "cross_chain_operations/chain_type_detection",
+            "value": 4,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "cross_chain_operations/multi_chain_transaction_creation",
+            "value": 98,
+            "range": "± 4",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "cross_chain_operations/cross_chain_address_handling",
+            "value": 18,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "hybrid_chain_operations/hybrid_chain_type_check",
+            "value": 1,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "hybrid_chain_operations/hybrid_evm_transaction",
+            "value": 48,
+            "range": "± 2",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "bulk_transaction_creation/substrate_bulk/10",
+            "value": 481,
+            "range": "± 25",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "bulk_transaction_creation/substrate_bulk/100",
+            "value": 4790,
+            "range": "± 246",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "bulk_transaction_creation/evm_bulk/10",
+            "value": 480,
+            "range": "± 24",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "decimal_conversions/dot_to_planck",
+            "value": 5,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "decimal_conversions/ksm_to_planck",
+            "value": 5,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "decimal_conversions/eth_to_wei",
+            "value": 5,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "decimal_conversions/planck_to_dot",
+            "value": 5,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "decimal_conversions/wei_to_eth",
+            "value": 5,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "chain_metadata_operations/get_rpc_endpoints",
+            "value": 3,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "chain_metadata_operations/check_smart_contract_support",
+            "value": 2,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "chain_metadata_operations/get_chain_ids",
+            "value": 2,
             "range": "± 0",
             "unit": "ns/iter"
           }
